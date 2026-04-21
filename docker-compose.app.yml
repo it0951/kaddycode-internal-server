@@ -1,0 +1,46 @@
+
+# ?�후 Internal Server�?Docker�?배포?????�용
+# AWS 배포 ???�성???�정
+
+services:
+  internal-server:
+    image: kaddycode/internal-server:latest
+    container_name: kaddycode-internal-server
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8081}:8081"
+    environment:
+      # Database
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-kaddycode}
+      DB_USER: ${DB_USER:-kaddycode}
+      DB_PASSWORD: ${DB_PASSWORD}
+      # Qdrant
+      QDRANT_HOST: ${QDRANT_HOST:-qdrant}
+      QDRANT_PORT: ${QDRANT_GRPC_PORT:-6334}
+      QDRANT_REST_URL: ${QDRANT_REST_URL:-http://qdrant:6333}
+      # Ollama
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5-coder:7b}
+      # AI Providers
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      CLAUDE_API_KEY: ${CLAUDE_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      # Backoffice
+      BACKOFFICE_URL: ${BACKOFFICE_URL:-http://backoffice:8080}
+      BACKOFFICE_ADMIN_EMAIL: ${BACKOFFICE_ADMIN_EMAIL}    # 기본값 제거
+      BACKOFFICE_ADMIN_PASSWORD: ${BACKOFFICE_ADMIN_PASSWORD}  # 기본값 제거
+      # Tenant
+      TENANT_AUTH_ENABLED: ${TENANT_AUTH_ENABLED:-true}
+    depends_on:
+      - postgres
+      - qdrant
+      - ollama
+    networks:
+      - kaddycode-network
+
+networks:
+  kaddycode-network:
+    name: kaddycode-network
+    driver: bridge

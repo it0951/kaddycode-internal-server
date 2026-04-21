@@ -1,0 +1,37 @@
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: kaddycode-qdrant
+    restart: unless-stopped
+    ports:
+      - "${QDRANT_HTTP_PORT:-6333}:6333"
+      - "${QDRANT_GRPC_PORT:-6334}:6334"
+    volumes:
+      - kaddycode-internal-server_qdrant_data:/qdrant/storage
+    mem_limit: 2g
+    networks:
+      - kaddycode-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: kaddycode-ollama
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - kaddycode-internal-server_ollama_data:/root/.ollama
+    mem_limit: 16g
+    networks:
+      - kaddycode-network
+
+volumes:
+  kaddycode-internal-server_qdrant_data:
+    external: true
+  kaddycode-internal-server_ollama_data:
+    external: true
+
+networks:
+  kaddycode-network:
+    name: kaddycode-network
+    driver: bridge

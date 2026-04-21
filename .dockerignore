@@ -1,0 +1,10 @@
+﻿.idea/
+.git/
+target/
+*.md
+.gitignore
+.gitattributes
+docker/
+docker-compose*.yml
+.env*
+dataSources/

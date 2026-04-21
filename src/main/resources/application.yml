@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: kaddycode-internal-server
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:kaddycode}
+    username: ${DB_USER:kaddycode}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  #security:
+  #  user:
+  #    name: admin
+  #    password: admin123
+
+server:
+  port: ${APP_PORT:8081}
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+logging:
+  level:
+    com.kaddycode: DEBUG
+    org.springframework.security: INFO
+
+qdrant:
+  host: ${QDRANT_HOST:localhost}
+  port: ${QDRANT_GRPC_PORT:6333}
+  collection-name: ${QDRANT_COLLECTION_NAME:kaddycode-vectors}
+  vector-size: ${QDRANT_VECTOR_SIZE:3583}
+  rest-url: ${QDRANT_REST_URL:http://localhost:6333}
+
+ollama:
+  base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+  model: ${OLLAMA_MODEL:qwen2.5-coder:7b}
+
+ai:
+  openai:
+    api-key: ${OPENAI_API_KEY:}
+  claude:
+    api-key: ${CLAUDE_API_KEY:}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+
+# backoffice 기본값에서 하드코딩 제거
+backoffice:
+  url: ${BACKOFFICE_URL:http://localhost:8080}
+  admin:
+    email: ${BACKOFFICE_ADMIN_EMAIL}       # 기본값 제거
+    password: ${BACKOFFICE_ADMIN_PASSWORD} # 기본값 제거
+
+tenant:
+  auth:
+    enabled: ${TENANT_AUTH_ENABLED:true}
+
+app:
+  version: "1.0.0"
+  vsix-filename: "kaddycode-1.0.0.vsix"
+  vsix-dir: "/opt/kaddycode/vsix"

@@ -1,0 +1,26 @@
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kaddycode-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-kaddycode}
+      POSTGRES_USER: ${DB_USER:-kaddycode}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # 기본값 제거
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - kaddycode-internal-server_postgres_data:/var/lib/postgresql/data
+    mem_limit: 2g
+    networks:
+      - kaddycode-network
+
+volumes:
+  kaddycode-internal-server_postgres_data:
+    external: true
+
+networks:
+  kaddycode-network:
+    name: kaddycode-network
+    driver: bridge
