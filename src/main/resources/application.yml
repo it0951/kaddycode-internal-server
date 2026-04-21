@@ -73,5 +73,4 @@ tenant:
 
 app:
   version: "1.0.0"
-  vsix-filename: "kaddycode-1.0.0.vsix"
   vsix-dir: "/opt/kaddycode/vsix"

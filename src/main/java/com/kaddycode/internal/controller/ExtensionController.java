@@ -20,9 +20,6 @@ public class ExtensionController {
     @Value("${app.version}")
     private String appVersion;
 
-    @Value("${app.vsix-filename}")
-    private String vsixFilename;
-
     @Value("${app.vsix-dir}")
     private String vsixDir;
 
@@ -35,16 +32,21 @@ public class ExtensionController {
     /** /verify 페이지 및 Extension에서 VSIX 다운로드 */
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadVsix() {
-        Resource resource = new FileSystemResource(
-                Paths.get(vsixDir, vsixFilename)
-        );
-        if (!resource.exists()) {
+        // vsix-dir에서 .vsix 파일 동적 탐색
+        java.io.File dir = new java.io.File(vsixDir);
+        java.io.File[] vsixFiles = dir.listFiles((d, name) -> name.endsWith(".vsix"));
+        if (vsixFiles == null || vsixFiles.length == 0) {
             return ResponseEntity.notFound().build();
         }
+        // 가장 최근 수정된 파일 선택
+        java.util.Arrays.sort(vsixFiles, (a, b) -> Long.compare(b.lastModified(), a.lastModified()));
+        java.io.File vsixFile = vsixFiles[0];
+
+        Resource resource = new FileSystemResource(vsixFile);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + vsixFilename + "\"")
+                        "attachment; filename=\"" + vsixFile.getName() + "\"")
                 .body(resource);
     }
 }
