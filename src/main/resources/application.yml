@@ -45,12 +45,13 @@ qdrant:
   host: ${QDRANT_HOST:localhost}
   port: ${QDRANT_GRPC_PORT:6333}
   collection-name: ${QDRANT_COLLECTION_NAME:kaddycode-vectors}
-  vector-size: ${QDRANT_VECTOR_SIZE:3583}
+  vector-size: ${QDRANT_VECTOR_SIZE:3584}
   rest-url: ${QDRANT_REST_URL:http://localhost:6333}
 
 ollama:
   base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
-  model: ${OLLAMA_MODEL:qwen2.5-coder:7b}
+  model: ${OLLAMA_MODEL:qwen2.5-coder:14b}
+  embedding-model: ${OLLAMA_EMBEDDING_MODEL:qwen2.5:7b}  # 추가
 
 ai:
   openai:

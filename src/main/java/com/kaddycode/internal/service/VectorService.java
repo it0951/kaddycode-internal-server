@@ -44,6 +44,9 @@ public class VectorService {
     @Value("${ollama.model:qwen2.5-coder:14b}")
     private String ollamaModel;
 
+    @Value("${ollama.embedding-model:qwen2.5:7b}")
+    private String embeddingModel;
+
     @Value("${qdrant.vector-size:5120}")
     private int vectorSize;
 
@@ -80,7 +83,7 @@ public class VectorService {
         RestClient client = restClientBuilder.baseUrl(ollamaBaseUrl).build();
 
         Map<String, Object> body = Map.of(
-                "model", ollamaModel,
+                "model", embeddingModel,
                 "input", text
         );
 
