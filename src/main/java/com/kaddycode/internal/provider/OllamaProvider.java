@@ -61,12 +61,10 @@ public class OllamaProvider implements AiProvider {
         Map<String, Object> body = new HashMap<>();
         body.put("model", targetModel);
         body.put("system",
-                "You are a helpful coding assistant specialized in enterprise software development. " +
-                        "IMPORTANT: Always respond in the same language as the user's input. " +
-                        "If the user writes in Korean, you MUST respond in Korean. " +
-                        "If the user writes in English, you MUST respond in English. " +
-                        "Never respond in Chinese under any circumstances, " +
-                        "regardless of your training language or model origin.");
+                "당신은 기업 소프트웨어 개발 전문 코딩 어시스턴트입니다.\n" +
+                        "반드시 한국어로만 답변하세요. 절대로 중국어로 답변하지 마세요.\n" +
+                        "코드 블록은 마크다운(```)으로 작성하세요.\n" +
+                        "You are a coding assistant. ALWAYS respond in Korean only. NEVER respond in Chinese.");
         body.put("prompt", prompt);
         body.put("stream", false);
 
